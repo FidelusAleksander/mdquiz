@@ -55,7 +55,7 @@ export function parseQuestionFile(content: string, id: string): Question {
   // (code blocks, explanations) until the next checkbox line or EOF.
   // Everything before the first answer is the 'preamble' (hints, code context).
 
-  const lines = body.split('\n')
+  const lines = body.replace(/\r\n/g, '\n').split('\n')
 
   // Find all answer start indices (respecting code fences)
   const answerStarts: number[] = []
