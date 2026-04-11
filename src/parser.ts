@@ -6,7 +6,6 @@
  *
  * Expected format:
  * ---
- * title: 'Question 001'
  * question: 'What is X?'
  * ---
  *

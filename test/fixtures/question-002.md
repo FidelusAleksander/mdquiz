@@ -1,5 +1,4 @@
 ---
-title: "Question 002"
 question: "Which statements about repository permissions are true?"
 ---
 

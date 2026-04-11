@@ -1,5 +1,4 @@
 ---
-title: "Question 001"
 question: "Which syntax defines a job that runs on Ubuntu?"
 ---
 

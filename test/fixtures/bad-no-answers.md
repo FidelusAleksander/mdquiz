@@ -1,5 +1,4 @@
 ---
-title: "No Answers"
 question: "This question has no answers"
 ---
 

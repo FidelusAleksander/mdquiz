@@ -1,6 +1,6 @@
 ---
-title: "Question 003"
 question: "What does this workflow configuration do?"
+difficulty: medium
 ---
 
 > https://docs.github.com/en/actions/using-workflows

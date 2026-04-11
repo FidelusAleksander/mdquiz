@@ -45,7 +45,6 @@ const questions = parseDirectory('./questions', {
 
 ```markdown
 ---
-title: "Question 001"
 question: "Which GitHub Actions syntax correctly defines a job that runs on Ubuntu?"
 ---
 
@@ -55,6 +54,16 @@ question: "Which GitHub Actions syntax correctly defines a job that runs on Ubun
 - [ ] `os: ubuntu-latest`
 - [ ] `platform: ubuntu-latest`
 - [ ] `environment: ubuntu-latest`
+```
+
+Only the `question` field is required in frontmatter. Any additional fields you include (e.g. `title`, `category`, `difficulty`) are accessible via `question.frontmatter`:
+
+```markdown
+---
+question: "What is a pull request?"
+difficulty: easy
+tags: ["git", "collaboration"]
+---
 ```
 
 ### Structure
