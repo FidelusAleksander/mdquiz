@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@10.33.0",
-  "description": "Parse markdown quiz files into structured objects. Supports YAML frontmatter, checkbox answers, code blocks, and hint blockquotes.",
+  "description": "Parse markdown quiz files into structured objects. Supports YAML frontmatter, checkbox answers, code blocks, hint blockquotes, and per-answer explanations.",
   "author": "Aleksander Fidelus",
   "license": "MIT",
   "homepage": "https://github.com/FidelusAleksander/mdquiz#readme",
