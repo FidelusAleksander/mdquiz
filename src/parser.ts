@@ -104,6 +104,7 @@ export function parseQuestionFile(content: string, id: string): Question {
   interface RawAnswer {
     isCorrect: boolean
     text: string
+    explanation?: string
   }
 
   const answers: RawAnswer[] = []
@@ -116,8 +117,9 @@ export function parseQuestionFile(content: string, id: string): Question {
     const isCorrect = match[1].toLowerCase() === 'x'
     let text = match[2].trim()
 
-    // Collect continuation lines (code blocks, etc.) — skip trailing blockquotes (explanations)
+    // Collect continuation lines (code blocks, etc.) and blockquote explanations
     const continuation: string[] = []
+    const explanationLines: string[] = []
     let contFence = false
     for (let j = startIdx + 1; j < endIdx; j++) {
       const l = lines[j]
@@ -130,9 +132,12 @@ export function parseQuestionFile(content: string, id: string): Question {
         continuation.push(l)
         continue
       }
-      // Skip blockquotes after answer (explanations)
-      if (BLOCKQUOTE_RE.test(l))
+      // Capture blockquotes after answer as explanation (may be indented)
+      const bqMatch = l.trim().match(BLOCKQUOTE_RE)
+      if (bqMatch) {
+        explanationLines.push(bqMatch[1])
         continue
+      }
       // Skip empty lines
       if (l.trim() === '')
         continue
@@ -144,7 +149,11 @@ export function parseQuestionFile(content: string, id: string): Question {
       text += `\n${continuation.join('\n')}`
     }
 
-    answers.push({ isCorrect, text })
+    const explanation = explanationLines.length > 0
+      ? explanationLines.join('\n').trim()
+      : undefined
+
+    answers.push({ isCorrect, text, explanation })
   }
 
   const correctCount = answers.filter(a => a.isCorrect).length
@@ -156,6 +165,7 @@ export function parseQuestionFile(content: string, id: string): Question {
       id: `a${i + 1}`,
       text: a.text,
       isCorrect: a.isCorrect,
+      ...(a.explanation ? { explanation: a.explanation } : {}),
     })),
     isMultiSelect: correctCount > 1,
     hint,

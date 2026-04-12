@@ -3,6 +3,8 @@ export interface AnswerOption {
   id: string
   text: string
   isCorrect: boolean
+  /** Optional per-answer explanation from blockquote lines after the answer */
+  explanation?: string
 }
 
 /** A parsed quiz question */
