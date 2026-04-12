@@ -5,6 +5,7 @@ export interface AnswerOption {
   id: string;
   text: string;
   isCorrect: boolean;
+  explanation?: string;
 }
 export interface ParseDirOptions {
   recursive?: boolean;

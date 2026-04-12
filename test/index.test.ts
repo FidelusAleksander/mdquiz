@@ -108,6 +108,13 @@ describe('parseQuestionFile', () => {
       expect(q.answers[3].text).not.toContain('This is wrong because')
     })
 
+    it('captures explanation from blockquote after answer', () => {
+      const q = getComplex()
+
+      // Answer 4 has a blockquote explanation
+      expect(q.answers[3].explanation).toBe('This is wrong because `runs-on: ubuntu-latest` uses a GitHub-hosted runner')
+    })
+
     it('includes code blocks within answer text', () => {
       const q = getComplex()
 
@@ -129,12 +136,13 @@ describe('parseDirectory', () => {
   it('parses all question files in a directory', () => {
     const questions = parseDirectory(FIXTURES, { filePrefix: 'question-' })
 
-    expect(questions).toHaveLength(4)
+    expect(questions).toHaveLength(5)
     expect(questions.map(q => q.id).sort()).toEqual([
       'question-001',
       'question-002',
       'question-003',
       'question-004',
+      'question-005',
     ])
   })
 
@@ -155,5 +163,44 @@ describe('parseDirectory', () => {
     const questions = parseDirectory(FIXTURES, { filePrefix: 'nonexistent-' })
 
     expect(questions).toEqual([])
+  })
+})
+
+describe('per-answer explanations', () => {
+  function getExplanations() {
+    return parseQuestionFile(readFixture('question-005.md'), 'question-005')
+  }
+
+  it('captures single-line explanation from blockquote', () => {
+    const q = getExplanations()
+
+    expect(q.answers[0].explanation).toBe('incorrect, both specific commit and on last modified branch')
+  })
+
+  it('joins multi-line blockquote explanations with newlines', () => {
+    const q = getExplanations()
+
+    expect(q.answers[1].explanation).toBe(
+      'correct, scheduled workflows always use the default branch\nsee the GitHub Actions documentation for more details',
+    )
+  })
+
+  it('omits explanation when no blockquote follows answer', () => {
+    const q = getExplanations()
+
+    expect(q.answers[2].explanation).toBeUndefined()
+  })
+
+  it('captures explanation on last answer', () => {
+    const q = getExplanations()
+
+    expect(q.answers[3].explanation).toBe('this describes workflow_dispatch, not schedule')
+  })
+
+  it('does not include explanation text in answer text', () => {
+    const q = getExplanations()
+
+    expect(q.answers[0].text).not.toContain('incorrect')
+    expect(q.answers[1].text).not.toContain('correct')
   })
 })

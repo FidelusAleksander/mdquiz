@@ -5,7 +5,7 @@
 [![bundle][bundle-src]][bundle-href]
 [![License][license-src]][license-href]
 
-Parse markdown quiz files into structured objects. Supports YAML frontmatter, checkbox answers, code blocks, and hint blockquotes.
+Parse markdown quiz files into structured objects. Supports YAML frontmatter, checkbox answers, code blocks, hint blockquotes, and per-answer explanations.
 
 ## Install
 
@@ -25,7 +25,7 @@ const md = readFileSync('question-001.md', 'utf-8')
 const question = parseQuestionFile(md, 'question-001')
 
 console.log(question.question) // "Which syntax defines a job?"
-console.log(question.answers) // [{ id: 'a1', text: '...', isCorrect: true }, ...]
+console.log(question.answers) // [{ id: 'a1', text: '...', isCorrect: true, explanation: '...' }, ...]
 console.log(question.isMultiSelect) // false
 console.log(question.hint) // "https://docs.github.com/..."
 ```
@@ -51,6 +51,7 @@ question: "Which GitHub Actions syntax correctly defines a job that runs on Ubun
 > https://docs.github.com/en/actions/using-workflows
 
 - [x] `runs-on: ubuntu-latest`
+> This is the correct syntax for specifying a runner
 - [ ] `os: ubuntu-latest`
 - [ ] `platform: ubuntu-latest`
 - [ ] `environment: ubuntu-latest`
@@ -74,6 +75,7 @@ tags: ["git", "collaboration"]
 | Blockquote | No | Hint text or URL (lines starting with `>`) |
 | Code block | No | Context code shown before answers |
 | Answers | Yes | Checkbox list: `- [x]` correct, `- [ ]` incorrect |
+| Answer explanation | No | Blockquote (`>`) after an answer provides a per-answer explanation |
 
 ### Answer formats
 
@@ -88,6 +90,18 @@ Both ordered and unordered lists work:
 ```
 
 Multiple `[x]` marks make the question multi-select automatically.
+
+### Per-answer explanations
+
+Add a blockquote (`>`) immediately after an answer to provide an explanation. Multi-line explanations are joined with newlines:
+
+```markdown
+- [x] Correct answer
+> This is why it's correct
+- [ ] Wrong answer
+> This is wrong because...
+> Here is more detail
+```
 
 ## API
 
@@ -116,6 +130,7 @@ interface AnswerOption {
   id: string
   text: string
   isCorrect: boolean
+  explanation?: string
 }
 
 interface ParseDirOptions {
