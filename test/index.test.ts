@@ -164,6 +164,25 @@ describe('parseDirectory', () => {
 
     expect(questions).toEqual([])
   })
+
+  it('skips bad files by default (non-strict)', () => {
+    const questions = parseDirectory(FIXTURES)
+    const ids = questions.map(q => q.id)
+
+    expect(ids).not.toContain('bad-no-question')
+    expect(ids).not.toContain('bad-no-answers')
+  })
+
+  it('throws on bad files when strict is true', () => {
+    expect(() => parseDirectory(FIXTURES, { strict: true }))
+      .toThrow('Failed to parse')
+  })
+
+  it('does not throw with strict when all files are valid', () => {
+    const questions = parseDirectory(FIXTURES, { strict: true, filePrefix: 'question-' })
+
+    expect(questions).toHaveLength(5)
+  })
 })
 
 describe('per-answer explanations', () => {
