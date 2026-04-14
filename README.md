@@ -38,6 +38,21 @@ import { parseDirectory } from 'mdquiz'
 const questions = parseDirectory('./questions', {
   filePrefix: 'question-', // only parse files starting with this prefix
   recursive: false, // walk subdirectories (default: false)
+  strict: false, // skip invalid files instead of throwing (default: false)
+})
+```
+
+### Strict mode
+
+By default, `parseDirectory` is non-strict: invalid markdown files are skipped and valid files continue to parse.
+
+Set `strict: true` to fail fast when any file cannot be parsed:
+
+```ts
+import { parseDirectory } from 'mdquiz'
+
+const questions = parseDirectory('./questions', {
+  strict: true,
 })
 ```
 
@@ -112,6 +127,7 @@ Parse a markdown string into a Question object.
 ### `parseDirectory(dir: string, options?: ParseDirOptions): Question[]`
 
 Parse all `.md` files in a directory. Skips files starting with `_`.
+In non-strict mode (default), invalid files are skipped. In strict mode, parsing throws on the first invalid file.
 
 ### Types
 
@@ -136,6 +152,7 @@ interface AnswerOption {
 interface ParseDirOptions {
   recursive?: boolean
   filePrefix?: string
+  strict?: boolean
 }
 ```
 
