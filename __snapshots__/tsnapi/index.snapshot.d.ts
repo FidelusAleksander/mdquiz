@@ -10,6 +10,7 @@ export interface AnswerOption {
 export interface ParseDirOptions {
   recursive?: boolean;
   filePrefix?: string;
+  strict?: boolean;
 }
 export interface Question {
   id: string;
