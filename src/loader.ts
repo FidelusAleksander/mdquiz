@@ -13,6 +13,8 @@ export interface ParseDirOptions {
   recursive?: boolean
   /** Glob-like prefix filter for filenames. Default: none (all .md files) */
   filePrefix?: string
+  /** When true, throw an error if any file fails to parse instead of skipping it. Default: false */
+  strict?: boolean
 }
 
 /**
@@ -29,7 +31,7 @@ export function parseDirectory(
   dir: string,
   options: ParseDirOptions = {},
 ): Question[] {
-  const { recursive = false, filePrefix } = options
+  const { recursive = false, filePrefix, strict = false } = options
   const questions: Question[] = []
 
   const entries = readdirSync(dir)
@@ -56,6 +58,9 @@ export function parseDirectory(
       questions.push(parseQuestionFile(content, id))
     }
     catch (err) {
+      if (strict) {
+        throw new Error(`Failed to parse ${fullPath}: ${(err as Error).message}`)
+      }
       console.warn(`Skipping ${fullPath}: ${(err as Error).message}`)
     }
   }
