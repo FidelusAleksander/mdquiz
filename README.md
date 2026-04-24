@@ -131,6 +131,7 @@ interface AnswerOption {
 interface ParseDirOptions {
   recursive?: boolean
   filePrefix?: string
+  strict?: boolean
 }
 ```
 

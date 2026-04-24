@@ -51,7 +51,7 @@ export function parseQuestionFile(content: string, id: string): Question {
   // Split body into lines and identify answer boundaries.
   // An answer starts at a checkbox line and includes all subsequent lines
   // (code blocks, explanations) until the next checkbox line or EOF.
-  // Everything before the first answer is the 'preamble' (hints, code context).
+  // Everything before the first answer is the 'preamble' (code context).
 
   const lines = body.replace(/\r\n/g, '\n').split('\n')
 
