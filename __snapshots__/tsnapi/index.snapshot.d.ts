@@ -17,7 +17,6 @@ export interface Question {
   question: string;
   answers: AnswerOption[];
   isMultiSelect: boolean;
-  hint?: string;
   codeBlock?: string;
   frontmatter: Record<string, unknown>;
 }

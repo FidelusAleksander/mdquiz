@@ -2,7 +2,7 @@
  * mdquiz — Parse markdown quiz files into structured objects.
  *
  * Supports YAML frontmatter, checkbox answers (- [x] / - [ ]),
- * code blocks, and hint blockquotes.
+ * code blocks, and per-answer explanations.
  */
 
 export { parseDirectory } from './loader'

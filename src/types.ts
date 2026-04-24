@@ -17,8 +17,6 @@ export interface Question {
   answers: AnswerOption[]
   /** Whether multiple answers are correct */
   isMultiSelect: boolean
-  /** Optional hint URL or text (from blockquote before answers) */
-  hint?: string
   /** Optional code block shown before answers (question context) */
   codeBlock?: string
   /** All frontmatter fields (title, question, and any custom fields) */
