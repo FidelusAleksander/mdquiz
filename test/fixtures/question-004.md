@@ -7,9 +7,6 @@ tags:
 source: "https://example.com/quiz-bank"
 ---
 
-> https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-> https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions
-
 ```yaml
 name: CI
 on:

@@ -3,8 +3,6 @@ question: "What does this workflow configuration do?"
 difficulty: medium
 ---
 
-> https://docs.github.com/en/actions/using-workflows
-
 ```yaml
 on:
   push:

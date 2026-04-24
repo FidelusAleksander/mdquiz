@@ -5,7 +5,7 @@
 [![bundle][bundle-src]][bundle-href]
 [![License][license-src]][license-href]
 
-Parse markdown quiz files into structured objects. Supports YAML frontmatter, checkbox answers, code blocks, hint blockquotes, and per-answer explanations.
+Parse markdown quiz files into structured objects. Supports YAML frontmatter, checkbox answers, code blocks, and per-answer explanations.
 
 ## Install
 
@@ -27,7 +27,6 @@ const question = parseQuestionFile(md, 'question-001')
 console.log(question.question) // "Which syntax defines a job?"
 console.log(question.answers) // [{ id: 'a1', text: '...', isCorrect: true, explanation: '...' }, ...]
 console.log(question.isMultiSelect) // false
-console.log(question.hint) // "https://docs.github.com/..."
 ```
 
 ### Parse a directory
@@ -47,8 +46,6 @@ const questions = parseDirectory('./questions', {
 ---
 question: "Which GitHub Actions syntax correctly defines a job that runs on Ubuntu?"
 ---
-
-> https://docs.github.com/en/actions/using-workflows
 
 - [x] `runs-on: ubuntu-latest`
 > This is the correct syntax for specifying a runner
@@ -72,7 +69,6 @@ tags: ["git", "collaboration"]
 | Section | Required | Description |
 |---------|----------|-------------|
 | Frontmatter | Yes | YAML with `question` field (and any custom fields) |
-| Blockquote | No | Hint text or URL (lines starting with `>`) |
 | Code block | No | Context code shown before answers |
 | Answers | Yes | Checkbox list: `- [x]` correct, `- [ ]` incorrect |
 | Answer explanation | No | Blockquote (`>`) after an answer provides a per-answer explanation |
@@ -121,7 +117,6 @@ interface Question {
   question: string
   answers: AnswerOption[]
   isMultiSelect: boolean
-  hint?: string
   codeBlock?: string
   frontmatter: Record<string, unknown>
 }
@@ -136,6 +131,7 @@ interface AnswerOption {
 interface ParseDirOptions {
   recursive?: boolean
   filePrefix?: string
+  strict?: boolean
 }
 ```
 

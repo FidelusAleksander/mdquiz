@@ -9,8 +9,6 @@
  * question: 'What is X?'
  * ---
  *
- * > https://docs.github.com/...  (optional hint)
- *
  * ```yaml                        (optional code block context)
  * some: code
  * ```
@@ -36,8 +34,8 @@ const FENCE_RE = /^```/
  * Parse a markdown string into a Question object.
  *
  * Expected format: YAML frontmatter with a `question` field,
- * followed by optional hints (blockquotes), optional code blocks,
- * and checkbox-list answers (`- [x]` or `- [ ]`).
+ * followed by optional code blocks and checkbox-list answers
+ * (`- [x]` or `- [ ]`).
  *
  * @param content - Raw markdown string
  * @param id - Unique identifier for this question (e.g. derived from filename)
@@ -53,7 +51,7 @@ export function parseQuestionFile(content: string, id: string): Question {
   // Split body into lines and identify answer boundaries.
   // An answer starts at a checkbox line and includes all subsequent lines
   // (code blocks, explanations) until the next checkbox line or EOF.
-  // Everything before the first answer is the 'preamble' (hints, code context).
+  // Everything before the first answer is the 'preamble' (code context).
 
   const lines = body.replace(/\r\n/g, '\n').split('\n')
 
@@ -76,7 +74,6 @@ export function parseQuestionFile(content: string, id: string): Question {
 
   // Preamble: everything before first answer
   const preambleLines = lines.slice(0, answerStarts[0])
-  let hint: string | undefined
   const codeBlockLines: string[] = []
   let inPreambleFence = false
 
@@ -89,10 +86,6 @@ export function parseQuestionFile(content: string, id: string): Question {
     if (inPreambleFence) {
       codeBlockLines.push(line)
       continue
-    }
-    const bqMatch = line.match(BLOCKQUOTE_RE)
-    if (bqMatch && bqMatch[1].trim()) {
-      hint = bqMatch[1].trim()
     }
   }
 
@@ -168,7 +161,6 @@ export function parseQuestionFile(content: string, id: string): Question {
       ...(a.explanation ? { explanation: a.explanation } : {}),
     })),
     isMultiSelect: correctCount > 1,
-    hint,
     codeBlock,
     frontmatter: data,
   }

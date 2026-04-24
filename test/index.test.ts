@@ -29,12 +29,6 @@ describe('parseQuestionFile', () => {
     expect(q.answers.filter(a => a.isCorrect)).toHaveLength(2)
   })
 
-  it('extracts hint from blockquote', () => {
-    const q = parseQuestionFile(readFixture('question-001.md'), 'question-001')
-
-    expect(q.hint).toBe('https://docs.github.com/en/actions')
-  })
-
   it('extracts code block from preamble', () => {
     const q = parseQuestionFile(readFixture('question-003.md'), 'question-003')
 
@@ -92,13 +86,6 @@ describe('parseQuestionFile', () => {
       expect(q.codeBlock).toContain('matrix:')
       expect(q.codeBlock).toContain('node: [18, 20, 22]')
       expect(q.codeBlock).toContain('npm test')
-    })
-
-    it('uses the last hint blockquote from preamble', () => {
-      const q = getComplex()
-
-      // Two blockquotes in preamble — parser keeps the last one
-      expect(q.hint).toContain('understanding-github-actions')
     })
 
     it('strips explanation blockquotes from answer text', () => {
