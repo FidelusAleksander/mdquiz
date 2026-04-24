@@ -50,6 +50,17 @@ describe('parseQuestionFile', () => {
     expect(q.answers.map(a => a.id)).toEqual(['a1', 'a2', 'a3', 'a4'])
   })
 
+  it('parses - [] (no space) as an incorrect answer', () => {
+    const md = `---\nquestion: "Test?"\n---\n\n- [] Option A\n- [x] Option B\n- [ ] Option C\n`
+    const q = parseQuestionFile(md, 'empty-checkbox')
+
+    expect(q.answers).toHaveLength(3)
+    expect(q.answers[0].isCorrect).toBe(false)
+    expect(q.answers[0].text).toBe('Option A')
+    expect(q.answers[1].isCorrect).toBe(true)
+    expect(q.answers[2].isCorrect).toBe(false)
+  })
+
   it('throws on missing question in frontmatter', () => {
     expect(() => parseQuestionFile(readFixture('bad-no-question.md'), 'bad'))
       .toThrow('Missing \'question\' in frontmatter')
