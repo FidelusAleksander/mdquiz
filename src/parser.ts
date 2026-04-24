@@ -22,7 +22,7 @@ import type { Question } from './types'
 import matter from 'gray-matter'
 
 /** Matches an answer line: `- [x] text` or `1. [x] text` */
-const ANSWER_RE = /^(?:\d+\.|-) \[([x ])\] (.*)$/i
+const ANSWER_RE = /^(?:\d+\.|-) \[([x ]?)\] (.*)$/i
 
 /** Matches a blockquote line */
 const BLOCKQUOTE_RE = /^> ?(.*)$/
